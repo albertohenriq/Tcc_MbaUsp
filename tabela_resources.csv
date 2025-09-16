@@ -1,0 +1,6 @@
+Recurso,REST,gRPC,Diferença,Impacto
+CPU Utilização (%),43.0,43.0,0%,Negligível
+Memória Peak (MB),650,652,+2MB,Negligível
+Network I/O,Médio,Baixo,gRPC melhor,Menor bandwidth
+Latência Mínima (ms),4.75,4.03,-0.72ms,Insignificante
+Latência Máxima (ms),370.97,519.95,+149ms,REST melhor

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package processing;
+
+service ProcessingService {
+  rpc ProcessData (ProcessRequest) returns (ProcessResponse);
+}
+
+message ProcessRequest {
+  string field1 = 1;
+  string field2 = 2;
+  int32 field3 = 3;
+  bool field4 = 4;
+  repeated string field5 = 5;
+  map<string, string> field6 = 6;
+  string field7 = 7;
+  double field8 = 8;
+  string field9 = 9;
+  string field10 = 10;
+}
+
+message ProcessResponse {
+  string message = 1;
+  bool success = 2;
+  string processedId = 3;
+  int64 timestamp = 4;
+}

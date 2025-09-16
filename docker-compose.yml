@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  service-a:
+    build: 
+      context: ./src/service-a-nodejs
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # REST
+      - "50051:50051"  # gRPC
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - kafka
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  service-b:
+    build:
+      context: ./src/service-b-python
+      dockerfile: Dockerfile
+  # Não mapear portas para host quando for escalar localmente.
+  # service-a é o entrypoint para os testes e chama service-b internamente.
+  # Se você precisar acessar service-b diretamente do host para debug, exponha temporariamente.
+  # Removemos os mapeamentos para evitar conflito de porta ao usar `docker compose --scale`.
+    # Note: 'deploy.replicas' is ignored by docker-compose CLI (it's for Swarm).
+    # For local scalability tests use: `docker compose up --scale service-b=<N> -d --build`
+    # Keep a hint here only.
+    deploy:
+      replicas: 1  # Configurável para testes de escalabilidade (somente Swarm)
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    depends_on:
+      - kafka
+      - prometheus
+
+  service-c:
+    build:
+      context: ./src/service-c-nodejs
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"  # REST
+      - "50053:50053"  # gRPC
+    depends_on:
+      - kafka
+      - prometheus
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: "lO5gmY72RBWJsZwdbmQEfg"
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3010:3000"
+    volumes:
+      - ./docker/grafana:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus_data:
+  grafana_data:

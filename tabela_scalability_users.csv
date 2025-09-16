@@ -1,0 +1,5 @@
+Protocolo,Usuários Virtuais,Latência Média (ms),Throughput (req/s),Taxa de Erro (%)
+REST,300,125.9,54.33,0.0
+REST,500,513.2,98.71,0.0
+gRPC,300,127.75,54.29,0.0
+gRPC,500,513.5,98.65,0.0

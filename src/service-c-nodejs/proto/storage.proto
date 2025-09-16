@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package storage;
+
+service StorageService {
+  rpc StoreData (StorageRequest) returns (StorageResponse);
+}
+
+message StorageRequest {
+  string processedId = 1;
+  string data = 2;
+}
+
+message StorageResponse {
+  bool success = 1;
+  string processedId = 2;
+}

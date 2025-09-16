@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'service-a'
+    static_configs:
+      - targets: ['service-a:3000']  # Metrics endpoint para REST
+      - targets: ['service-a:50051']  # Metrics endpoint para gRPC
+
+  - job_name: 'service-b'
+    static_configs:
+      # Quando o serviço for escalado via `docker compose up --scale service-b=<N>`,
+      # cada instância ficará exposta internamente como service-b:<port> via o balanceador do compose.
+      - targets: ['service-b:3001']
+      - targets: ['service-b:50052']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'service-c'
+    static_configs:
+      - targets: ['service-c:3002']
+      - targets: ['service-c:50053']

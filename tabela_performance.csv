@@ -1,0 +1,7 @@
+Métrica,REST,gRPC,Diferença,Vantagem
+Latência Média (ms),125.9,127.75,+1.85ms,REST
+Latência P95 (ms),201.54,202.79,+1.25ms,REST
+Latência P99 (ms),248.94,259.78,+10.84ms,REST
+Throughput (req/s),54.33,54.29,-0.04,REST
+Taxa de Sucesso (%),100.0,100.0,0%,Empate
+Eficiência (req/s/ms),0.43,0.42,+0.01,REST

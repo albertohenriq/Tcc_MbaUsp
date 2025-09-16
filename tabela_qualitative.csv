@@ -1,0 +1,6 @@
+Critério,REST (Score),gRPC (Score),Peso (%),Vencedor
+Facilidade de Implementação,9.0,7.0,25,REST
+Manutenibilidade,8.0,9.0,20,gRPC
+Curva de Aprendizado,9.0,6.0,15,REST
+Performance,8.5,8.3,25,REST
+Ecosistema,9.5,7.5,15,REST

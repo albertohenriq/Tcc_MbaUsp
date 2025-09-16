@@ -1,0 +1,207 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "REST vs gRPC Performance Comparison",
+    "tags": ["performance", "microservices"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage Comparison",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "avg(rate(container_cpu_usage_seconds_total{name=~\".*service-a.*\"}[5m])) * 100",
+            "legendFormat": "Service-A CPU %",
+            "refId": "A"
+          },
+          {
+            "expr": "avg(rate(container_cpu_usage_seconds_total{name=~\".*service-b.*\"}[5m])) * 100",
+            "legendFormat": "Service-B CPU %",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "displayMode": "list",
+              "orientation": "horizontal"
+            },
+            "mappings": [],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "pluginVersion": "8.0.0",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage Comparison",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "avg(container_memory_usage_bytes{name=~\".*service-a.*\"}) / 1024 / 1024",
+            "legendFormat": "Service-A Memory (MB)",
+            "refId": "A"
+          },
+          {
+            "expr": "avg(container_memory_usage_bytes{name=~\".*service-b.*\"}) / 1024 / 1024",
+            "legendFormat": "Service-B Memory (MB)",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "displayMode": "list",
+              "orientation": "horizontal"
+            },
+            "mappings": [],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 200
+                },
+                {
+                  "color": "red",
+                  "value": 400
+                }
+              ]
+            },
+            "unit": "decbytes"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "pluginVersion": "8.0.0",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Network I/O",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(container_network_receive_bytes_total{name=~\".*service-a.*\"}[5m])",
+            "legendFormat": "Service-A RX",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(container_network_transmit_bytes_total{name=~\".*service-a.*\"}[5m])",
+            "legendFormat": "Service-A TX",
+            "refId": "B"
+          },
+          {
+            "expr": "rate(container_network_receive_bytes_total{name=~\".*service-b.*\"}[5m])",
+            "legendFormat": "Service-B RX",
+            "refId": "C"
+          },
+          {
+            "expr": "rate(container_network_transmit_bytes_total{name=~\".*service-b.*\"}[5m])",
+            "legendFormat": "Service-B TX",
+            "refId": "D"
+          }
+        ],
+        "xAxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yAxes": [
+          {
+            "format": "binBps",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yAxis": {
+          "align": false,
+          "alignLevel": null
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        }
+      }
+    ],
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+
+    "uid": "rest-grpc-comparison",
+    "version": 1,
+    "weekStart": ""
+  }
+}

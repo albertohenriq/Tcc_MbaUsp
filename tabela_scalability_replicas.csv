@@ -1,0 +1,9 @@
+Réplicas,Protocolo,Throughput (req/s),Latência (ms),Melhoria (%)
+1,REST,98.71,513.2,0.0
+2,REST,98.78,513.1,0.07
+4,REST,98.72,513.0,0.01
+8,REST,98.77,512.8,0.06
+1,gRPC,98.65,513.5,0.0
+2,gRPC,98.7,513.3,0.05
+4,gRPC,98.68,513.2,0.03
+8,gRPC,98.75,513.0,0.1
